@@ -23,7 +23,8 @@
     "helmet": "^3.21.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.4",
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^4.1.0",
+    "twilio": "^3.35.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.2"
