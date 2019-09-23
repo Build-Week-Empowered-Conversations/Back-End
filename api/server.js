@@ -1,7 +1,10 @@
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
+const restricted = require('../auth/auth-middleware');
+const Users = require('../database/user-model');
 
 const server = express();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -16,7 +19,7 @@ server.get('/', (req, res) => {
   res.send("It's alive!");
 });
 
-server.post('/', (req,res)=>{
+server.post('/',restricted, (req,res)=>{
   let { senderName, senderPhone, recipientName, recipientPhone } = req.body;
   if(senderName && senderPhone && recipientName && recipientPhone){
   client.messages
@@ -32,3 +35,54 @@ server.post('/', (req,res)=>{
 }})
 
 module.exports = server;
+
+server.post('/register', (req, res) => {
+  let user = req.body;
+  const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
+  user.password = hash;
+
+  Users.add(user)
+    .then(saved => {
+      res.status(201).json(saved);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+server.post('/login', (req, res) => {
+  let { username, password } = req.body;
+
+  Users.findBy({ username })
+    .first()
+    .then(user => {
+      if (user && bcrypt.compareSync(password, user.password)) {
+        const token =genToken(user)
+        res.status(200).json({
+          message: `Welcome ${user.username}!`, token: token 
+        });
+      } else {
+        res.status(401).json({ message: 'Invalid Credentials'});
+      }
+    })
+    .catch(error => {
+      res.status(500).json({error:error, message:"Oops there was an error"});
+    });
+});
+
+
+server.get('/restricted',restricted,(req,res)=>{
+  res.status(200).json({message:'this is the restriced page'})
+})
+
+function genToken(user){
+  const payload ={
+    subject: user.id,
+    username: user.username
+  };
+  const secret = "super secret";
+  const opttions={
+    expiresIn: '8h',
+  }
+  return token = jwt.sign(payload, secret, opttions)
+}
