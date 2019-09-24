@@ -15,9 +15,18 @@ server.use(helmet());
 server.use(express.json());
 server.use(cors());
 
+
+
+
+
 server.get('/', (req, res) => {
   res.send("It's alive!");
 });
+
+
+
+
+
 
 server.post('/',restricted, (req,res)=>{
   let { senderName, senderPhone, recipientName, recipientPhone, userID} = req.body;
@@ -34,7 +43,7 @@ server.post('/',restricted, (req,res)=>{
   res.status(400).json({error: 'Please provide a NAME and PHONE NUMBER for both the SENDER and RECIPIENT'})
 }})
 
-module.exports = server;
+
 
 
 //register fuction needs a phone number to add the the database so you can look up the phone number by ID
@@ -52,9 +61,12 @@ server.post('/register', (req, res) => {
     });
 });
 
+
+
+
+
 server.post('/login', (req, res) => {
   let { username, password } = req.body;
-
   Users.findBy({ username })
     .first()
     .then(user => {
@@ -72,7 +84,10 @@ server.post('/login', (req, res) => {
     });
 });
 
-server.post('/module',restricted, (req,res) =>{
+
+
+
+server.post('/module', (req,res) =>{
   let userID = req.body.userID
   let guest = req.body.guestName;
   Users.findById(userID)
@@ -85,15 +100,16 @@ server.post('/module',restricted, (req,res) =>{
        to: `${user.phone}`
      })
     res.status(200).json({message:"The message has been sent sucessfully"})
-  })
-  //find user by that ID and then send message to that person with Twilio
-  
+  }) 
 })
+
 
 
 server.get('/restricted',restricted,(req,res)=>{
   res.status(200).json({message:'this is the restricted page'})
 })
+
+
 
 function genToken(user){
   const payload ={
@@ -106,3 +122,5 @@ function genToken(user){
   }
   return token = jwt.sign(payload, secret, opttions)
 }
+
+module.exports = server;
