@@ -33,7 +33,7 @@ server.post('/',restricted, (req,res)=>{
   if(senderName && senderPhone && recipientName && recipientPhone){
   client.messages
   .create({
-     body: `Dear ${recipientName}, this is the message from Empowered Conversations. Your friend has something they wish to talk to you about. Please look at the following link for information about the topic they'd like to discuss with you. This is your verifcation code: ${userID} When you have read through the materials you can reach ${senderName} at ${senderPhone}.`,
+     body: `Dear ${recipientName}, this is the message from Empowered Conversations. Your friend has something they wish to talk to you about. Please look at the following link for information about the topic they'd like to discuss with you. This is your verifcation code: ${userID} When you have read through the materials we will let your friend know you are ready to have a conversatoin.`,
      from: '+13164444881',
      to: `${recipientPhone}`
    })
