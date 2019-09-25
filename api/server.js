@@ -86,10 +86,9 @@ server.post('/login', (req, res) => {
 
 
 
-
 server.post('/module', (req,res) =>{
   let userID = req.body.userID
-  let guest = req.body.guestName;
+  let guest = req.body.guest;
   Users.findById(userID)
   .first()
   .then(user =>{
