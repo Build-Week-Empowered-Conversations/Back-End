@@ -121,6 +121,23 @@ server.get('/users/:id', (req, res) =>{
   })
 })
 
+server.delete('/users/:id', (req,res)=>{
+  const userId = req.params.id;
+
+  Users.remove(userId)
+  .then(user =>{
+      if(user){
+          res.status(200).json({user:user, message:"This user has been deleted"});
+      } else {
+          res.status(404).json({ message: "The user with the specified ID does not exist." })
+      }
+      
+  })
+  .catch(err =>{
+      res.status(500).json({ error: "The user could not be removed" })
+  })
+})
+
 server.get('/restricted',restricted,(req,res) =>{
 res.status(200).json({message:"token is valid"})
 })
