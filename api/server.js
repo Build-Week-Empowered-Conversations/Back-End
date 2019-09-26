@@ -121,6 +121,9 @@ server.get('/users/:id', (req, res) =>{
   })
 })
 
+server.get('/restricted',required,(req,res) =>{
+res.status(200).json({message:"token is valid"})
+})
 
 
 function genToken(user){
