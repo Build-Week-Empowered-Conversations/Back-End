@@ -86,8 +86,11 @@ server.post('/module', (req,res) =>{
 server.put('/users/:id', (req, res) =>{
   const {id} = req.params;
   const changes = req.body;
-  const hash = bcrypt.hashSync(changes.password, 10); // 2 ^ n
-  changes.password = hash;
+
+  if(changes.password){
+    const hash = bcrypt.hashSync(changes.password, 10); // 2 ^ n
+    changes.password = hash;
+  }
 
   changes? Users.update(id, changes) .then(updated =>{
       if(updated){
