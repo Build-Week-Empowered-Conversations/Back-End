@@ -7,6 +7,7 @@ module.exports = {
   findById,
   insert,
   update,
+  remove,
 };
 
 function find() {
@@ -39,3 +40,11 @@ async function update(id, changes) {
 
   return findById(id);
 }
+async function remove(id) {
+  const removed = await findById(id);
+  await db('users')
+    .where({ id })
+    .del();
+
+  return removed;
+} 
