@@ -105,7 +105,7 @@ server.put('/users/:id', (req, res) =>{
 server.get('/users/:id', (req, res) =>{
   const {id} = req.params;
 
-  db.findById(id)
+  Users.findById(id)
   .then(user => {
       if(user){
       res.status(200).json(user)
