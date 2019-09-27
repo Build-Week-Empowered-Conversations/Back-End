@@ -7,16 +7,16 @@ const restricted = require('../auth/auth-middleware');
 const Users = require('../database/user-model');
 
 const server = express();
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require('twilio')(accountSid, authToken);
+// const accountSid = process.env.TWILIO_ACCOUNT_SID;
+// const authToken = process.env.TWILIO_AUTH_TOKEN;
+// const client = require('twilio')(accountSid, authToken);
 
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
 
 server.get('/', (req, res) => {
-  res.send("It's alive!");
+  res.status(200).json({message:"It's alive!"})
 });
 
 server.post('/',restricted, (req,res)=>{
