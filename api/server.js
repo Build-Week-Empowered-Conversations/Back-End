@@ -19,6 +19,7 @@ server.get('/', (req, res) => {
   res.status(200).json({message:"It's alive!"})
 });
 
+
 server.post('/',restricted, (req,res)=>{
   let { recipientName, recipientPhone, userID} = req.body;
   if( userID && recipientName && recipientPhone){
